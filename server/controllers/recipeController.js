@@ -14,12 +14,16 @@ const checkId = (req, res) => {
 }
 
 const checkDocument = (recipe, res) => {
-	!recipe
-		? res.status(400).json({ error: 'No Such Recipe' })
-		: res.status(200).json(recipe)
+	if (!recipe) {
+		res.status(400).json({ error: 'No Such Recipe' })
+	} else {
+		res.status(200).json(recipe)
+	}
 }
 
 // controllers 🔌
+
+// get all recipes 👨‍🍳
 const getRecipes = async (req, res) => {
 	const recipes = await Recipe.find({}).sort({ createdAt: -1 })
 	res.status(200).json(recipes)
@@ -30,6 +34,18 @@ const getRecipe = async (req, res) => {
 	const id = await checkId(req, res)
 	const recipe = await Recipe.findById(id)
 	checkDocument(recipe, res)
+}
+
+// get all iced beverages 🧊
+const getIced = async (req, res) => {
+	const query = Recipe.find({ iced: true })
+	try {
+		const docs = await query.exec();
+        res.json(docs).status(200)
+		console.log('Iced retrieved successfully 🎉🧊')
+	} catch (error) {
+		console.log(error)
+	}
 }
 
 // create recipe 👨‍🍳
@@ -51,6 +67,7 @@ const deleteRecipe = async (req, res) => {
 	const id = await checkId(req, res)
 	const recipe = await Recipe.findOneAndDelete({ _id: id })
 	checkDocument(recipe, res)
+	console.log('Recipe Deleted ✂︎')
 }
 
 // Update a recipe --> Model.updateOne()
@@ -63,6 +80,7 @@ const updateRecipe = async (req, res) => {
 module.exports = {
 	getRecipes,
 	getRecipe,
+	getIced,
 	addRecipe,
 	deleteRecipe,
 	updateRecipe,

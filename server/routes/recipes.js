@@ -4,6 +4,7 @@ const router = express.Router()
 const {
 	getRecipes,
 	getRecipe,
+	getIced,
 	addRecipe,
 	deleteRecipe,
 	updateRecipe,
@@ -11,6 +12,9 @@ const {
 
 // GET all recipes ❤️
 router.get('/', getRecipes)
+
+// GET all iced recipes 🧊
+router.get('/iced', getIced)
 
 // GET a single recipe
 router.get('/:id', getRecipe)
