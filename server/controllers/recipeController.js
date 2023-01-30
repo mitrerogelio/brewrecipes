@@ -70,12 +70,13 @@ const deleteRecipe = async (req, res) => {
 	console.log('Recipe Deleted ✂︎')
 }
 
-// Update a recipe --> Model.updateOne()
+// update recipe
 const updateRecipe = async (req, res) => {
-	const id = await checkId(req, res)
-	const recipe = await Recipe.findOneAndUpdate({ _id: id }, { ...req.body })
-	checkDocument(recipe, res)
+    const id = await checkId(req, res)
+    const recipe = await Recipe.findOneAndUpdate({_id: id}, {$set: req.body }, { new: true })
+    checkDocument(recipe, res)
 }
+
 
 module.exports = {
 	getRecipes,
